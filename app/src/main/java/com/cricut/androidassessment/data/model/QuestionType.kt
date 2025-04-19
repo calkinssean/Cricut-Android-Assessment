@@ -1,7 +1,9 @@
 package com.cricut.androidassessment.data.model
 
 enum class QuestionType {
-    MultipleChoice,
+    SingleAnswerMultipleChoice,
+    MultipleAnswerMultipleChoice,
     TrueFalse,
-    TextInput
+    TextInput,
+    MultiAnswerMultipleChoice
 }
