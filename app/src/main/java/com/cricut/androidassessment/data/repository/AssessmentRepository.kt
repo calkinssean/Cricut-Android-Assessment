@@ -1,11 +1,11 @@
 package com.cricut.androidassessment.data.repository
 
-import com.cricut.androidassessment.data.model.MultiAnswerMultipleChoiceQuestion
-import com.cricut.androidassessment.data.model.SingleAnswerMultipleChoiceQuestion
-import com.cricut.androidassessment.data.model.Question
-import com.cricut.androidassessment.data.model.QuestionType
-import com.cricut.androidassessment.data.model.TextInputQuestion
-import com.cricut.androidassessment.data.model.TrueFalseQuestion
+import com.cricut.androidassessment.data.model.question.MultiAnswerMultipleChoiceQuestion
+import com.cricut.androidassessment.data.model.question.SingleAnswerMultipleChoiceQuestion
+import com.cricut.androidassessment.data.model.question.Question
+import com.cricut.androidassessment.data.model.common.QuestionType
+import com.cricut.androidassessment.data.model.question.TextInputQuestion
+import com.cricut.androidassessment.data.model.question.TrueFalseQuestion
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 

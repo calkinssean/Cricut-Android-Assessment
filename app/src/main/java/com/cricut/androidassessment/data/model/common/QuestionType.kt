@@ -1,4 +1,4 @@
-package com.cricut.androidassessment.data.model
+package com.cricut.androidassessment.data.model.common
 
 enum class QuestionType {
     SingleAnswerMultipleChoice,
