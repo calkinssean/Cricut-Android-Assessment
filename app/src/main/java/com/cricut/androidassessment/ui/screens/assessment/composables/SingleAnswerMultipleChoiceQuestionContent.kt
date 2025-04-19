@@ -11,22 +11,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.cricut.androidassessment.data.model.question.MultiAnswerMultipleChoiceQuestion
+import com.cricut.androidassessment.data.model.question.SingleAnswerMultipleChoiceQuestion
 import com.cricut.androidassessment.ui.common.composables.SelectableRow
 import com.cricut.androidassessment.ui.theme.AndroidAssessmentTheme
 import java.util.UUID
 
+
 @Composable
-fun MultiAnswerMultipleChoiceQuestionContent(
+fun SingleAnswerMultipleChoiceQuestionContent(
     modifier: Modifier = Modifier,
-    question: MultiAnswerMultipleChoiceQuestion
+    question: SingleAnswerMultipleChoiceQuestion
 ) {
     Column(
         modifier = modifier.padding(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(question.questionText)
-        Text("Select all that apply")
         Spacer(modifier = Modifier.height(50.dp))
         question.options.forEach {
             SelectableRow(text = it, checked = true, onClick = {})
@@ -36,15 +36,15 @@ fun MultiAnswerMultipleChoiceQuestionContent(
 
 @Preview(showBackground = true)
 @Composable
-fun MultipleChoiceQuestionContentPreview() {
+fun SingleAnswerMultipleChoiceQuestionContentPreview() {
     AndroidAssessmentTheme {
-        val question = MultiAnswerMultipleChoiceQuestion(
+        val question = SingleAnswerMultipleChoiceQuestion(
             questionId = UUID.randomUUID().toString(),
-            questionText = "Which of the following are primary colors?",
+            questionText = "What is your favorite color?",
             options = listOf("Red", "Green", "Blue", "Yellow", "Orange"),
-            correctAnswers = setOf(0, 2, 3)
+            correctAnswerIndex = 2
         )
-        MultiAnswerMultipleChoiceQuestionContent(
+        SingleAnswerMultipleChoiceQuestionContent(
             modifier = Modifier.fillMaxSize(),
             question = question
         )

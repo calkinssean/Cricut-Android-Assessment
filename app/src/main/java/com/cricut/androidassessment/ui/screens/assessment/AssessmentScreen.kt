@@ -1,5 +1,6 @@
 package com.cricut.androidassessment.ui.screens.assessment
 
+import android.widget.Space
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +19,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.cricut.androidassessment.data.model.common.QuestionType
+import com.cricut.androidassessment.data.model.question.MultiAnswerMultipleChoiceQuestion
 import com.cricut.androidassessment.data.model.question.TrueFalseQuestion
 import com.cricut.androidassessment.ui.common.LoadingScreen
 import com.cricut.androidassessment.ui.common.composables.AssessmentButton
@@ -28,6 +30,17 @@ import java.util.UUID
 
 const val AssessmentScreenRoute = "AssessmentScreenRoute"
 
+private data class AssessmentScreenInteractions(
+    val onNextClicked: () -> Unit
+
+) {
+    companion object {
+        val Empty = AssessmentScreenInteractions(
+            onNextClicked = {}
+        )
+    }
+}
+
 fun NavGraphBuilder.assessmentScreen() {
     composable(
         route = AssessmentScreenRoute
@@ -36,9 +49,14 @@ fun NavGraphBuilder.assessmentScreen() {
         val viewModel: AssessmentViewModel = hiltViewModel()
         val uiState by viewModel.observableModel.collectAsStateWithLifecycle()
 
+        val interactions = AssessmentScreenInteractions(
+            onNextClicked = viewModel::onNextClicked
+        )
+
         AssessmentScreen(
             modifier = Modifier.fillMaxSize(),
-            state = uiState
+            state = uiState,
+            interactions = interactions
         )
     }
 }
@@ -46,13 +64,15 @@ fun NavGraphBuilder.assessmentScreen() {
 @Composable
 private fun AssessmentScreen(
     modifier: Modifier = Modifier,
-    state: AssessmentScreenState
+    state: AssessmentScreenState,
+    interactions: AssessmentScreenInteractions
 ) {
     when {
         state.isLoading -> LoadingScreen(modifier = modifier)
         else -> AssessmentScreenContent(
             modifier = modifier.padding(horizontal = 16.dp),
-            state = state
+            state = state,
+            interactions = interactions
         )
     }
 }
@@ -60,7 +80,8 @@ private fun AssessmentScreen(
 @Composable
 private fun AssessmentScreenContent(
     modifier: Modifier,
-    state: AssessmentScreenState
+    state: AssessmentScreenState,
+    interactions: AssessmentScreenInteractions
 ) {
     Scaffold(
         modifier = modifier,
@@ -90,12 +111,13 @@ private fun AssessmentScreenContent(
                             .weight(1f),
                         question = currentQuestion
                     )
+                } else {
+                    Spacer(modifier = Modifier.weight(1f))
                 }
-                Spacer(modifier = Modifier.weight(1f))
                 AssessmentButton(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = {},
-                    enabled = state.isCurrentQuestionAnswered,
+                    onClick = { interactions.onNextClicked() },
+//                    enabled = state.isCurrentQuestionAnswered,
                     text = if (state.isLastQuestion) "Submit" else "Next"
                 )
             }
@@ -120,14 +142,21 @@ private fun PreviewAssessmentScreen() {
                 questionText = "Question 2",
                 questionType = QuestionType.TrueFalse,
                 correctAnswer = true
+            ),
+            MultiAnswerMultipleChoiceQuestion(
+                questionId = UUID.randomUUID().toString(),
+                questionText = "Which of the following are primary colors?",
+                options = listOf("Red", "Green", "Blue", "Yellow", "Orange"),
+                correctAnswers = setOf(0, 2, 3)
             )
         ),
-        currentQuestionIndex = 1
+        currentQuestionIndex = 2
     )
     AndroidAssessmentTheme {
         AssessmentScreen(
             modifier = Modifier.fillMaxSize(),
-            state = state
+            state = state,
+            interactions = AssessmentScreenInteractions.Empty
         )
     }
 }

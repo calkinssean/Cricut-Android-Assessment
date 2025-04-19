@@ -50,9 +50,9 @@ class AssessmentRepository @Inject constructor() {
             ),
             TrueFalseQuestion(
                 UUID.randomUUID().toString(),
-                "Is the Earth a landlocked country?",
+                "The sky is blue",
                 QuestionType.TrueFalse,
-                false
+                true
             ),
             TrueFalseQuestion(
                 UUID.randomUUID().toString(),

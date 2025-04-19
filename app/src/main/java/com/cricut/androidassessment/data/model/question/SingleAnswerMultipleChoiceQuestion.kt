@@ -6,6 +6,6 @@ data class SingleAnswerMultipleChoiceQuestion(
     override val questionId: String,
     override val questionText: String,
     override val questionType: QuestionType = QuestionType.SingleAnswerMultipleChoice,
-    val choices: List<String>,
+    val options: List<String>,
     val correctAnswerIndex: Int
 ) : Question

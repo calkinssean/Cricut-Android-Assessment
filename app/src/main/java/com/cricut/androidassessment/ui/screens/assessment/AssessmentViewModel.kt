@@ -1,5 +1,6 @@
 package com.cricut.androidassessment.ui.screens.assessment
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cricut.androidassessment.data.repository.AssessmentRepository
@@ -18,8 +19,9 @@ class AssessmentViewModel
 ) : ViewModel() {
 
     private val mutableModel = MutableStateFlow(AssessmentScreenState(isLoading = true))
-    val observableModel: StateFlow<AssessmentScreenState> = mutableModel.asStateFlow()
-    private val latestModel: AssessmentScreenState = mutableModel.value
+    val observableModel: StateFlow<AssessmentScreenState> = mutableModel
+    private val latestModel: AssessmentScreenState
+        get() = mutableModel.value
 
     init {
         fetchQuestions()
@@ -32,12 +34,13 @@ class AssessmentViewModel
         }
     }
 
-    fun onNextTapped() {
+    fun onNextClicked() {
         if (latestModel.isLastQuestion) {
 
         } else {
-
+            mutableModel.update { it.copy(currentQuestionIndex = it.currentQuestionIndex + 1) }
         }
+        Log.d("ViewModel", "Next clicked. ${latestModel.currentQuestionIndex}, ${latestModel.questions.size}")
     }
 
 
