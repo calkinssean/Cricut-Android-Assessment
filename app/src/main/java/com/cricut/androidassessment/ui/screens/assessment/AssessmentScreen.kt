@@ -31,12 +31,14 @@ import java.util.UUID
 const val AssessmentScreenRoute = "AssessmentScreenRoute"
 
 private data class AssessmentScreenInteractions(
-    val onNextClicked: () -> Unit
+    val onNextClicked: () -> Unit,
+    val onPreviousQuestionClicked: () -> Unit
 
 ) {
     companion object {
         val Empty = AssessmentScreenInteractions(
-            onNextClicked = {}
+            onNextClicked = {},
+            onPreviousQuestionClicked = {}
         )
     }
 }
@@ -50,7 +52,8 @@ fun NavGraphBuilder.assessmentScreen() {
         val uiState by viewModel.observableModel.collectAsStateWithLifecycle()
 
         val interactions = AssessmentScreenInteractions(
-            onNextClicked = viewModel::onNextClicked
+            onNextClicked = viewModel::onNextClicked,
+            onPreviousQuestionClicked = viewModel::onPreviousQuestionClicked
         )
 
         AssessmentScreen(
@@ -113,6 +116,15 @@ private fun AssessmentScreenContent(
                     )
                 } else {
                     Spacer(modifier = Modifier.weight(1f))
+                }
+                if (state.currentQuestionIndex != 0) {
+                    AssessmentButton(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp),
+                        onClick = { interactions.onPreviousQuestionClicked() },
+                        text = "Previous Question"
+                    )
                 }
                 AssessmentButton(
                     modifier = Modifier.fillMaxWidth(),

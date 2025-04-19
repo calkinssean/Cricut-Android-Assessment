@@ -40,7 +40,14 @@ class AssessmentViewModel
         } else {
             mutableModel.update { it.copy(currentQuestionIndex = it.currentQuestionIndex + 1) }
         }
-        Log.d("ViewModel", "Next clicked. ${latestModel.currentQuestionIndex}, ${latestModel.questions.size}")
+        Log.d(
+            "ViewModel",
+            "Next clicked. ${latestModel.currentQuestionIndex}, ${latestModel.questions.size}"
+        )
+    }
+
+    fun onPreviousQuestionClicked() {
+        mutableModel.update { it.copy(currentQuestionIndex = it.currentQuestionIndex - 1) }
     }
 
 
