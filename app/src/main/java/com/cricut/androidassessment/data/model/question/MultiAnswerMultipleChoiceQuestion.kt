@@ -7,5 +7,5 @@ data class MultiAnswerMultipleChoiceQuestion(
     override val questionText: String,
     override val questionType: QuestionType = QuestionType.MultiAnswerMultipleChoice,
     val options: List<String>,
-    val correctAnswer: Set<Int>
+    val correctAnswers: Set<Int>
 ): Question

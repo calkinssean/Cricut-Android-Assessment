@@ -14,10 +14,11 @@ fun QuestionContent(
     question: Question
 ) {
     when (question) {
-        is MultiAnswerMultipleChoiceQuestion, is SingleAnswerMultipleChoiceQuestion -> MultipleChoiceQuestionContent(
+        is MultiAnswerMultipleChoiceQuestion-> MultiAnswerMultipleChoiceQuestionContent(
             modifier,
             question
         )
+        is SingleAnswerMultipleChoiceQuestion -> {}
         is TextInputQuestion -> TextInputQuestionContent(modifier, question)
         is TrueFalseQuestion -> TrueFalseQuestionContent(modifier, question)
     }

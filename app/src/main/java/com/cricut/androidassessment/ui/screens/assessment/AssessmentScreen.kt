@@ -1,9 +1,12 @@
 package com.cricut.androidassessment.ui.screens.assessment
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -65,10 +68,21 @@ private fun AssessmentScreenContent(
             AssessmentTopBar(modifier = Modifier.fillMaxWidth(), title = "Assessment")
         },
         content = { paddingValues ->
-            Column(modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .padding(bottom = 16.dp)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(bottom = 16.dp)
+            ) {
+
+                LinearProgressIndicator(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    progress = {
+                        state.progress
+                    }
+                )
+
                 val currentQuestion = state.currentQuestion
                 if (currentQuestion != null) {
                     QuestionContent(
@@ -77,6 +91,7 @@ private fun AssessmentScreenContent(
                         question = currentQuestion
                     )
                 }
+                Spacer(modifier = Modifier.weight(1f))
                 AssessmentButton(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {},
@@ -106,7 +121,8 @@ private fun PreviewAssessmentScreen() {
                 questionType = QuestionType.TrueFalse,
                 correctAnswer = true
             )
-        )
+        ),
+        currentQuestionIndex = 1
     )
     AndroidAssessmentTheme {
         AssessmentScreen(
