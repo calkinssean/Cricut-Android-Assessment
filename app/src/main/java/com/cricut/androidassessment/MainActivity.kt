@@ -4,8 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.cricut.androidassessment.ui.theme.AndroidAssessmentTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,14 +15,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
-            AppScaffold(navController = navController)
+            AndroidAssessmentTheme {
+                NavigationHost(navController = navController)
+            }
         }
-    }
-}
-
-@Composable
-fun AppScaffold(navController: NavHostController) {
-    AndroidAssessmentTheme {
-        NavigationHost(navController = navController)
     }
 }
