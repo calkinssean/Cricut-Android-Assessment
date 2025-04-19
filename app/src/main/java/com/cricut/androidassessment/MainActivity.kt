@@ -4,11 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.ui.Modifier
-import com.cricut.androidassessment.ui.screens.assessment.AssessmentScreen
+import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.cricut.androidassessment.ui.theme.AndroidAssessmentTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,11 +16,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AndroidAssessmentTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    AssessmentScreen(modifier = Modifier.padding(innerPadding))
-                }
-            }
+            val navController = rememberNavController()
+            AppScaffold(navController = navController)
         }
+    }
+}
+
+@Composable
+fun AppScaffold(navController: NavHostController) {
+    AndroidAssessmentTheme {
+        NavigationHost(navController = navController)
     }
 }

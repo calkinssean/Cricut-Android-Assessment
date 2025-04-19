@@ -19,6 +19,7 @@ class AssessmentViewModel
 
     private val mutableModel = MutableStateFlow(AssessmentScreenState(isLoading = true))
     val observableModel: StateFlow<AssessmentScreenState> = mutableModel.asStateFlow()
+    private val latestModel: AssessmentScreenState = mutableModel.value
 
     init {
         fetchQuestions()
@@ -32,7 +33,11 @@ class AssessmentViewModel
     }
 
     fun onNextTapped() {
+        if (latestModel.isLastQuestion) {
 
+        } else {
+
+        }
     }
 
 

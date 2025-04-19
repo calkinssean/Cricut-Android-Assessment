@@ -10,4 +10,6 @@ data class AssessmentScreenState (
     val currentQuestion: Question?
         get() = questions.getOrNull(currentQuestionIndex)
 
+    val isLastQuestion: Boolean = currentQuestionIndex == questions.size - 1
+
 }

@@ -1,39 +1,66 @@
 package com.cricut.androidassessment.ui.screens.assessment
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import com.cricut.androidassessment.ui.screens.common.LoadingScreen
 import com.cricut.androidassessment.ui.theme.AndroidAssessmentTheme
 
+const val AssessmentScreenRoute = "AssessmentScreenRoute"
+
+fun NavGraphBuilder.assessmentScreen() {
+    composable(
+        route = AssessmentScreenRoute
+    ) { backStackEntry ->
+
+        val viewModel: AssessmentViewModel = hiltViewModel()
+        val uiState by viewModel.observableModel.collectAsStateWithLifecycle()
+
+        AssessmentScreen(
+            modifier = Modifier.fillMaxSize(),
+            state = uiState
+        )
+    }
+}
+
 @Composable
-fun AssessmentScreen(
+private fun AssessmentScreen(
     modifier: Modifier = Modifier,
-    viewModel: AssessmentViewModel = viewModel()
+    state: AssessmentScreenState
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    when {
+        state.isLoading -> LoadingScreen(modifier = modifier)
+        else -> AssessmentScreenContent(modifier = modifier)
+    }
 
     // TODO implement Compose UI
 
-    // Remove this
-    Box(modifier = modifier.fillMaxSize()) {
-        Text(
-            uiState,
-            modifier = Modifier.align(Alignment.Center)
-        )
-    }
+
+}
+
+@Composable
+private fun AssessmentScreenContent(
+    modifier: Modifier = Modifier
+) {
+
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun PreviewAssessmentScreen() {
+    val state = AssessmentScreenState(
+        isLoading = true
+    )
     AndroidAssessmentTheme {
-        AssessmentScreen()
+        AssessmentScreen(
+            modifier = Modifier.fillMaxSize(),
+            state = state
+        )
     }
 }
