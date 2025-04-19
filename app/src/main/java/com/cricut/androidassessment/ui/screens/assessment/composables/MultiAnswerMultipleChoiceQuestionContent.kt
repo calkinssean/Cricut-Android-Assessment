@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -25,8 +26,8 @@ fun MultiAnswerMultipleChoiceQuestionContent(
         modifier = modifier.padding(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Text(question.questionText)
-        Text("Select all that apply")
+        Text(question.questionText, style = MaterialTheme.typography.titleMedium)
+        Text("Select all that apply", style = MaterialTheme.typography.bodySmall)
         Spacer(modifier = Modifier.height(50.dp))
         question.options.forEach {
             SelectableRow(text = it, checked = true, onClick = {})
