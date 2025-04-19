@@ -1,4 +1,4 @@
-package com.cricut.androidassessment.ui
+package com.cricut.androidassessment.ui.screens.assessment
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -10,9 +10,8 @@ import javax.inject.Inject
 @HiltViewModel
 class AssessmentViewModel
 @Inject constructor() : ViewModel() {
-    // TODO implement state variables and functions
 
-    // Remove/Modify this
-    private val _uiState = MutableStateFlow<String>("Hello World!")
-    val uiState: StateFlow<String> = _uiState.asStateFlow()
+    private val mutableModel = MutableStateFlow(AssessmentScreenState(isLoading = true))
+    val observableModel: StateFlow<AssessmentScreenState> = mutableModel.asStateFlow()
+
 }
