@@ -6,7 +6,7 @@ import com.cricut.androidassessment.data.model.question.Question
 data class AssessmentScreenState(
     val isLoading: Boolean,
     val questions: List<Question> = listOf(),
-    val answers: List<Answer> = listOf(),
+    val answers: Map<String, Answer> = mapOf(),
     val currentQuestionIndex: Int = 0
 ) {
     val currentQuestion: Question?
@@ -15,9 +15,16 @@ data class AssessmentScreenState(
     val isLastQuestion: Boolean = currentQuestionIndex == questions.size - 1
 
     val isCurrentQuestionAnswered: Boolean
-        get() = answers.any { it.questionId == currentQuestion?.questionId }
+        get() {
+            val questionId = currentQuestion?.id
+            return if (questionId != null) answers.containsKey(questionId)
+            else false
+        }
 
     val progress: Float
         get() = currentQuestionIndex.toFloat() / questions.size
+
+    val currentAnswer: Answer?
+        get() = answers[currentQuestion?.id]
 
 }

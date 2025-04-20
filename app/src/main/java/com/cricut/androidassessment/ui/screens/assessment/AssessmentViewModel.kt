@@ -1,13 +1,17 @@
 package com.cricut.androidassessment.ui.screens.assessment
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cricut.androidassessment.data.model.answer.Answer
+import com.cricut.androidassessment.data.model.answer.MultipleChoiceAnswer
+import com.cricut.androidassessment.data.model.answer.TextInputAnswer
+import com.cricut.androidassessment.data.model.answer.TrueFalseAnswer
+import com.cricut.androidassessment.data.model.question.Question
 import com.cricut.androidassessment.data.repository.AssessmentRepository
+import com.cricut.androidassessment.ui.screens.assessment.reducers.AssessmentScreenStateReducer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -15,10 +19,11 @@ import javax.inject.Inject
 @HiltViewModel
 class AssessmentViewModel
 @Inject constructor(
-    private val assessmentRepository: AssessmentRepository
+    private val assessmentRepository: AssessmentRepository,
+    private val reducer: AssessmentScreenStateReducer
 ) : ViewModel() {
 
-    private val mutableModel = MutableStateFlow(AssessmentScreenState(isLoading = true))
+    private val mutableModel = MutableStateFlow(reducer.createInitialState())
     val observableModel: StateFlow<AssessmentScreenState> = mutableModel
     private val latestModel: AssessmentScreenState
         get() = mutableModel.value
@@ -30,7 +35,12 @@ class AssessmentViewModel
     private fun fetchQuestions() {
         viewModelScope.launch {
             val questions = assessmentRepository.getQuestions()
-            mutableModel.update { it.copy(isLoading = false, questions = questions) }
+            mutableModel.update {
+                reducer.updateStateWithQuestions(
+                    latestModel,
+                    questions
+                )
+            }
         }
     }
 
@@ -38,17 +48,16 @@ class AssessmentViewModel
         if (latestModel.isLastQuestion) {
 
         } else {
-            mutableModel.update { it.copy(currentQuestionIndex = it.currentQuestionIndex + 1) }
+            mutableModel.update { reducer.updateStateWithNextQuestion(latestModel) }
         }
-        Log.d(
-            "ViewModel",
-            "Next clicked. ${latestModel.currentQuestionIndex}, ${latestModel.questions.size}"
-        )
     }
 
     fun onPreviousQuestionClicked() {
-        mutableModel.update { it.copy(currentQuestionIndex = it.currentQuestionIndex - 1) }
+        mutableModel.update { reducer.updateStateWithPreviousQuestion(latestModel) }
     }
 
+    fun onAnswerValueChanged(question: Question, value: Any) {
+        mutableModel.update { reducer.updateAnswersWithValue(latestModel, question, value) }
+    }
 
 }

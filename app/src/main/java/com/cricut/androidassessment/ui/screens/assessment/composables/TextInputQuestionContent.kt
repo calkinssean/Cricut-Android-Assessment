@@ -36,7 +36,7 @@ fun TextInputQuestionContent(modifier: Modifier, question: TextInputQuestion) {
 private fun TextInputQuestionContentPreview() {
     AndroidAssessmentTheme {
         val question = TextInputQuestion(
-            questionId = UUID.randomUUID().toString(),
+            id = UUID.randomUUID().toString(),
             questionText = "What is your name?",
             questionType = QuestionType.TextInput,
             correctAnswer = "Sir Lancelot the Brave"

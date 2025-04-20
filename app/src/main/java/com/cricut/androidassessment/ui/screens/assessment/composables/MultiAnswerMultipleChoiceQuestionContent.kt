@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.cricut.androidassessment.data.model.answer.MultipleChoiceAnswer
+import com.cricut.androidassessment.data.model.common.QuestionType
 import com.cricut.androidassessment.data.model.question.MultiAnswerMultipleChoiceQuestion
 import com.cricut.androidassessment.ui.common.composables.SelectableRow
 import com.cricut.androidassessment.ui.theme.AndroidAssessmentTheme
@@ -20,7 +22,9 @@ import java.util.UUID
 @Composable
 fun MultiAnswerMultipleChoiceQuestionContent(
     modifier: Modifier = Modifier,
-    question: MultiAnswerMultipleChoiceQuestion
+    question: MultiAnswerMultipleChoiceQuestion,
+    answer: MultipleChoiceAnswer? = null,
+    onAnswerSelected: (String, Int) -> Unit = { _, _ -> }
 ) {
     Column(
         modifier = modifier.padding(vertical = 16.dp),
@@ -29,8 +33,14 @@ fun MultiAnswerMultipleChoiceQuestionContent(
         Text(question.questionText, style = MaterialTheme.typography.titleMedium)
         Text("Select all that apply", style = MaterialTheme.typography.bodySmall)
         Spacer(modifier = Modifier.height(50.dp))
-        question.options.forEach {
-            SelectableRow(text = it, checked = true, onClick = {})
+        question.options.forEachIndexed { index, text ->
+            SelectableRow(
+                text = text,
+                checked = answer?.selectedIndices?.contains(index) ?: false,
+                onClick = {
+                    onAnswerSelected(question.id, index)
+                }
+            )
         }
     }
 }
@@ -40,14 +50,21 @@ fun MultiAnswerMultipleChoiceQuestionContent(
 fun MultiAnswerMultipleChoiceQuestionContentPreview() {
     AndroidAssessmentTheme {
         val question = MultiAnswerMultipleChoiceQuestion(
-            questionId = UUID.randomUUID().toString(),
+            id = UUID.randomUUID().toString(),
             questionText = "Which of the following are primary colors?",
             options = listOf("Red", "Green", "Blue", "Yellow", "Orange"),
             correctAnswers = setOf(0, 2, 3)
         )
+        val answer = MultipleChoiceAnswer(
+            questionId = question.id,
+            questionText = question.questionText,
+            selectedIndices = setOf(0, 2, 3),
+            questionType = QuestionType.MultiAnswerMultipleChoice
+        )
         MultiAnswerMultipleChoiceQuestionContent(
             modifier = Modifier.fillMaxSize(),
-            question = question
+            question = question,
+            answer = answer
         )
     }
 }

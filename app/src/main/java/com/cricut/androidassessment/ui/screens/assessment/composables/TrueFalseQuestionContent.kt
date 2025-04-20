@@ -36,7 +36,7 @@ fun TrueFalseQuestionContent(modifier: Modifier, question: TrueFalseQuestion) {
 private fun TrueFalseQuestionContentPreview() {
     AndroidAssessmentTheme {
         val question = TrueFalseQuestion(
-            questionId = UUID.randomUUID().toString(),
+            id = UUID.randomUUID().toString(),
             questionText = "Do you want to hire Sean?",
             questionType = QuestionType.TrueFalse,
             correctAnswer = true

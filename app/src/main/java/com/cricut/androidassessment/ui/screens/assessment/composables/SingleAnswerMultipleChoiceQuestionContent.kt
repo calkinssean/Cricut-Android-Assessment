@@ -40,7 +40,7 @@ fun SingleAnswerMultipleChoiceQuestionContent(
 fun SingleAnswerMultipleChoiceQuestionContentPreview() {
     AndroidAssessmentTheme {
         val question = SingleAnswerMultipleChoiceQuestion(
-            questionId = UUID.randomUUID().toString(),
+            id = UUID.randomUUID().toString(),
             questionText = "What is your favorite color?",
             options = listOf("Red", "Green", "Blue", "Yellow", "Orange"),
             correctAnswerIndex = 2

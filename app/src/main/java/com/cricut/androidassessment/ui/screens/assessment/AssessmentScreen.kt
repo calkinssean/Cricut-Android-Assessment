@@ -1,7 +1,5 @@
 package com.cricut.androidassessment.ui.screens.assessment
 
-import android.widget.Space
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -144,19 +142,19 @@ private fun PreviewAssessmentScreen() {
         isLoading = false,
         questions = listOf(
             TrueFalseQuestion(
-                questionId = UUID.randomUUID().toString(),
+                id = UUID.randomUUID().toString(),
                 questionText = "Question 1",
                 questionType = QuestionType.TrueFalse,
                 correctAnswer = true
             ),
             TrueFalseQuestion(
-                questionId = UUID.randomUUID().toString(),
+                id = UUID.randomUUID().toString(),
                 questionText = "Question 2",
                 questionType = QuestionType.TrueFalse,
                 correctAnswer = true
             ),
             MultiAnswerMultipleChoiceQuestion(
-                questionId = UUID.randomUUID().toString(),
+                id = UUID.randomUUID().toString(),
                 questionText = "Which of the following are primary colors?",
                 options = listOf("Red", "Green", "Blue", "Yellow", "Orange"),
                 correctAnswers = setOf(0, 2, 3)
