@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.cricut.androidassessment.data.model.answer.MultipleChoiceAnswer
+import com.cricut.androidassessment.data.model.question.Question
 import com.cricut.androidassessment.data.model.question.SingleAnswerMultipleChoiceQuestion
 import com.cricut.androidassessment.ui.common.composables.SelectableRow
 import com.cricut.androidassessment.ui.theme.AndroidAssessmentTheme
@@ -21,7 +23,9 @@ import java.util.UUID
 @Composable
 fun SingleAnswerMultipleChoiceQuestionContent(
     modifier: Modifier = Modifier,
-    question: SingleAnswerMultipleChoiceQuestion
+    question: SingleAnswerMultipleChoiceQuestion,
+    answer: MultipleChoiceAnswer?,
+    onValueChanged: (Question, Any) -> Unit
 ) {
     Column(
         modifier = modifier.padding(vertical = 16.dp),
@@ -29,8 +33,12 @@ fun SingleAnswerMultipleChoiceQuestionContent(
     ) {
         Text(question.questionText, style = MaterialTheme.typography.titleMedium)
         Spacer(modifier = Modifier.height(50.dp))
-        question.options.forEach {
-            SelectableRow(text = it, checked = true, onClick = {})
+        question.options.forEachIndexed { index, it ->
+            SelectableRow(
+                text = it,
+                checked = answer?.selectedIndices?.contains(index) ?: false,
+                onClick = { onValueChanged(question, index) }
+            )
         }
     }
 }
@@ -45,9 +53,17 @@ fun SingleAnswerMultipleChoiceQuestionContentPreview() {
             options = listOf("Red", "Green", "Blue", "Yellow", "Orange"),
             correctAnswerIndex = 2
         )
+        val answer = MultipleChoiceAnswer(
+            questionId = UUID.randomUUID().toString(),
+            questionText = "What is your favorite color?",
+            questionType = question.questionType,
+            selectedIndices = setOf(2)
+        )
         SingleAnswerMultipleChoiceQuestionContent(
             modifier = Modifier.fillMaxSize(),
-            question = question
+            question = question,
+            answer = answer,
+            onValueChanged = { _, _ -> }
         )
     }
 }

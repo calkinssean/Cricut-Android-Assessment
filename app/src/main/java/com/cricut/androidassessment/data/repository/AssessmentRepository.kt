@@ -45,8 +45,8 @@ class AssessmentRepository @Inject constructor() {
                 UUID.randomUUID().toString(),
                 "What are the three primary colors?",
                 QuestionType.MultiAnswerMultipleChoice,
-                listOf("Red", "Green", "Blue", "Yellow"),
-                setOf(0, 1, 2)
+                options = listOf("Red", "Green", "Blue", "Yellow", "Orange"),
+                setOf(0, 2, 3)
             ),
             TrueFalseQuestion(
                 UUID.randomUUID().toString(),

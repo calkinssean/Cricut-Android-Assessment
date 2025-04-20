@@ -18,6 +18,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.cricut.androidassessment.data.model.common.QuestionType
 import com.cricut.androidassessment.data.model.question.MultiAnswerMultipleChoiceQuestion
+import com.cricut.androidassessment.data.model.question.Question
 import com.cricut.androidassessment.data.model.question.TrueFalseQuestion
 import com.cricut.androidassessment.ui.common.LoadingScreen
 import com.cricut.androidassessment.ui.common.composables.AssessmentButton
@@ -30,13 +31,14 @@ const val AssessmentScreenRoute = "AssessmentScreenRoute"
 
 private data class AssessmentScreenInteractions(
     val onNextClicked: () -> Unit,
-    val onPreviousQuestionClicked: () -> Unit
-
+    val onPreviousQuestionClicked: () -> Unit,
+    val onAnswerValueChanged: (Question, Any) -> Unit
 ) {
     companion object {
         val Empty = AssessmentScreenInteractions(
             onNextClicked = {},
-            onPreviousQuestionClicked = {}
+            onPreviousQuestionClicked = {},
+            onAnswerValueChanged = { _, _ -> }
         )
     }
 }
@@ -51,7 +53,8 @@ fun NavGraphBuilder.assessmentScreen() {
 
         val interactions = AssessmentScreenInteractions(
             onNextClicked = viewModel::onNextClicked,
-            onPreviousQuestionClicked = viewModel::onPreviousQuestionClicked
+            onPreviousQuestionClicked = viewModel::onPreviousQuestionClicked,
+            onAnswerValueChanged = viewModel::onAnswerValueChanged
         )
 
         AssessmentScreen(
@@ -108,9 +111,10 @@ private fun AssessmentScreenContent(
                 val currentQuestion = state.currentQuestion
                 if (currentQuestion != null) {
                     QuestionContent(
-                        modifier = Modifier
-                            .weight(1f),
-                        question = currentQuestion
+                        modifier = Modifier.weight(1f),
+                        question = currentQuestion,
+                        answer = state.currentAnswer,
+                        onValueChanged = interactions.onAnswerValueChanged
                     )
                 } else {
                     Spacer(modifier = Modifier.weight(1f))
@@ -127,7 +131,7 @@ private fun AssessmentScreenContent(
                 AssessmentButton(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = { interactions.onNextClicked() },
-//                    enabled = state.isCurrentQuestionAnswered,
+                    enabled = state.isCurrentQuestionAnswered,
                     text = if (state.isLastQuestion) "Submit" else "Next"
                 )
             }

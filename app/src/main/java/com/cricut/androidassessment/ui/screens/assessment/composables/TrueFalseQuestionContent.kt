@@ -12,22 +12,37 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.cricut.androidassessment.data.model.answer.TrueFalseAnswer
 import com.cricut.androidassessment.data.model.common.QuestionType
+import com.cricut.androidassessment.data.model.question.Question
 import com.cricut.androidassessment.data.model.question.TrueFalseQuestion
 import com.cricut.androidassessment.ui.common.composables.SelectableRow
 import com.cricut.androidassessment.ui.theme.AndroidAssessmentTheme
 import java.util.UUID
 
 @Composable
-fun TrueFalseQuestionContent(modifier: Modifier, question: TrueFalseQuestion) {
+fun TrueFalseQuestionContent(
+    modifier: Modifier,
+    question: TrueFalseQuestion,
+    answer: TrueFalseAnswer?,
+    onValueChanged: (Question, Any) -> Unit
+) {
     Column(
         modifier = modifier.padding(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(question.questionText, style = MaterialTheme.typography.titleMedium)
         Spacer(modifier = Modifier.height(50.dp))
-        SelectableRow(text = "True", checked = false, onClick = {})
-        SelectableRow(text = "False", checked = false, onClick = {})
+        SelectableRow(
+            text = "True",
+            checked = answer?.answer == true,
+            onClick = { onValueChanged(question, true) }
+        )
+        SelectableRow(
+            text = "False",
+            checked = answer?.answer == false,
+            onClick = { onValueChanged(question, false) }
+        )
     }
 }
 
@@ -41,6 +56,17 @@ private fun TrueFalseQuestionContentPreview() {
             questionType = QuestionType.TrueFalse,
             correctAnswer = true
         )
-        TrueFalseQuestionContent(modifier = Modifier.fillMaxWidth(), question = question)
+        val answer = TrueFalseAnswer(
+            questionId = question.id,
+            questionText = "Do you want to hire Sean?",
+            questionType = QuestionType.TrueFalse,
+            answer = true
+        )
+        TrueFalseQuestionContent(
+            modifier = Modifier.fillMaxWidth(),
+            question = question,
+            answer = answer,
+            onValueChanged = { _, _ -> }
+        )
     }
 }

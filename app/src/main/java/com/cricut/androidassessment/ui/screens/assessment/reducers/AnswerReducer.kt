@@ -6,8 +6,9 @@ import com.cricut.androidassessment.data.model.answer.TextInputAnswer
 import com.cricut.androidassessment.data.model.answer.TrueFalseAnswer
 import com.cricut.androidassessment.data.model.common.QuestionType
 import com.cricut.androidassessment.data.model.question.Question
+import javax.inject.Inject
 
-class AnswerReducer {
+class AnswerReducer @Inject constructor() {
 
     fun reduce(question: Question, answer: Answer?, value: Any): Answer? {
         return when (question.questionType) {

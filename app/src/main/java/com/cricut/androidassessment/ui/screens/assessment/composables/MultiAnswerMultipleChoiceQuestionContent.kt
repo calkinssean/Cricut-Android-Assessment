@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.cricut.androidassessment.data.model.answer.MultipleChoiceAnswer
 import com.cricut.androidassessment.data.model.common.QuestionType
 import com.cricut.androidassessment.data.model.question.MultiAnswerMultipleChoiceQuestion
+import com.cricut.androidassessment.data.model.question.Question
 import com.cricut.androidassessment.ui.common.composables.SelectableRow
 import com.cricut.androidassessment.ui.theme.AndroidAssessmentTheme
 import java.util.UUID
@@ -24,7 +25,7 @@ fun MultiAnswerMultipleChoiceQuestionContent(
     modifier: Modifier = Modifier,
     question: MultiAnswerMultipleChoiceQuestion,
     answer: MultipleChoiceAnswer? = null,
-    onAnswerSelected: (String, Int) -> Unit = { _, _ -> }
+    onValueChanged: (Question, Any) -> Unit
 ) {
     Column(
         modifier = modifier.padding(vertical = 16.dp),
@@ -38,7 +39,7 @@ fun MultiAnswerMultipleChoiceQuestionContent(
                 text = text,
                 checked = answer?.selectedIndices?.contains(index) ?: false,
                 onClick = {
-                    onAnswerSelected(question.id, index)
+                    onValueChanged(question, index)
                 }
             )
         }
@@ -64,7 +65,8 @@ fun MultiAnswerMultipleChoiceQuestionContentPreview() {
         MultiAnswerMultipleChoiceQuestionContent(
             modifier = Modifier.fillMaxSize(),
             question = question,
-            answer = answer
+            answer = answer,
+            onValueChanged = { _, _ -> }
         )
     }
 }
