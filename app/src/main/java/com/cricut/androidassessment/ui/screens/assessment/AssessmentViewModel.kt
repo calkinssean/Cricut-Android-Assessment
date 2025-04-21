@@ -68,4 +68,8 @@ class AssessmentViewModel
         mutableModel.update { reducer.updateAnswersWithValue(latestModel, question, value) }
     }
 
+    fun resetState() {
+        mutableModel.update { reducer.createInitialState() }
+    }
+
 }

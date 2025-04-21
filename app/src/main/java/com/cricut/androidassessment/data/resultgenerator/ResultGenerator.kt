@@ -42,7 +42,7 @@ class ResultGenerator @Inject constructor() {
             question = question.questionText,
             correctAnswer = question.correctAnswer,
             answer = safeAnswer.answer,
-            isCorrect = question.correctAnswer == safeAnswer.answer
+            isCorrect = question.correctAnswer.lowercase() == safeAnswer.answer.lowercase()
         )
     }
 
@@ -72,7 +72,7 @@ class ResultGenerator @Inject constructor() {
             question = question.questionText,
             correctAnswer = correctAnswer,
             answer = selectedAnswer,
-            isCorrect = correctAnswer.lowercase() == selectedAnswer.lowercase()
+            isCorrect = correctAnswer == selectedAnswer
         )
     }
 
@@ -87,7 +87,7 @@ class ResultGenerator @Inject constructor() {
         return AssessmentResult(
             question = question.questionText,
             correctAnswer = correctAnswers.joinToString(", "),
-            answer = selectedAnswers.joinToString( ", "),
+            answer = selectedAnswers.joinToString(", "),
             isCorrect = question.correctAnswers.containsAll(safeAnswer.selectedIndices)
         )
     }

@@ -86,6 +86,7 @@ private fun AssessmentScreenContent(
                     .fillMaxSize()
                     .padding(paddingValues)
                     .padding(bottom = 16.dp)
+                    .padding(horizontal = 16.dp)
             ) {
 
                 LinearProgressIndicator(

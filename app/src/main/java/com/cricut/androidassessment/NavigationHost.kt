@@ -54,7 +54,15 @@ private fun NavGraphBuilder.assessmentNavigationGraph(navController: NavHostCont
             val viewModel: AssessmentViewModel = hiltViewModel(parentEntry)
             ResultsScreen(
                 modifier = Modifier.fillMaxSize(),
-                viewModel = viewModel
+                viewModel = viewModel,
+                onRetryClicked = {
+                    navController.navigate(AssessmentScreenRoute) {
+                        popUpTo(AssessmentGraph) {
+                            inclusive = true
+                        }
+                        viewModel.resetState()
+                    }
+                }
             )
         }
     }

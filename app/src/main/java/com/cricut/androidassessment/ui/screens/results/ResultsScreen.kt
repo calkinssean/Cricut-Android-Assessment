@@ -2,6 +2,7 @@ package com.cricut.androidassessment.ui.screens.results
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,8 +20,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.cricut.androidassessment.data.model.results.AssessmentResult
 import com.cricut.androidassessment.data.model.results.AssessmentResults
 import com.cricut.androidassessment.ui.common.LoadingScreen
+import com.cricut.androidassessment.ui.common.composables.AssessmentButton
 import com.cricut.androidassessment.ui.common.composables.AssessmentTopBar
-import com.cricut.androidassessment.ui.screens.common.AssessmentState
 import com.cricut.androidassessment.ui.screens.assessment.AssessmentViewModel
 import com.cricut.androidassessment.ui.screens.results.composables.ResultListItem
 import com.cricut.androidassessment.ui.theme.AndroidAssessmentTheme
@@ -30,7 +31,8 @@ const val ResultsScreenRoute = "ResultsScreenRoute"
 @Composable
 fun ResultsScreen(
     modifier: Modifier = Modifier,
-    viewModel: AssessmentViewModel
+    viewModel: AssessmentViewModel,
+    onRetryClicked: () -> Unit
 ) {
     LaunchedEffect(Unit) {
         viewModel.getAssessmentResults()
@@ -39,14 +41,19 @@ fun ResultsScreen(
     val results = state.results
     when {
         state.fetchingResults || results == null -> LoadingScreen(modifier = modifier)
-        else -> ResultsScreenContent(modifier = modifier, results = results)
+        else -> ResultsScreenContent(
+            modifier = modifier,
+            results = results,
+            onRetryClicked = onRetryClicked
+        )
     }
 }
 
 @Composable
 private fun ResultsScreenContent(
     modifier: Modifier,
-    results: AssessmentResults
+    results: AssessmentResults,
+    onRetryClicked: () -> Unit
 ) {
     Scaffold(
         modifier = modifier,
@@ -55,19 +62,30 @@ private fun ResultsScreenContent(
         },
         content = { paddingValues ->
             Column(
-                modifier = Modifier.padding(paddingValues).padding(top = 8.dp),
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    text = "You scored ${results.score}%",
+                    text = "You scored %.1f%%".format(results.score * 100),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleLarge
                 )
                 results.results.forEach {
                     ResultListItem(modifier = Modifier.fillMaxWidth(), it)
                 }
+                Spacer(modifier = Modifier.weight(1f))
+                AssessmentButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "Retry",
+                    onClick = {
+                        onRetryClicked()
+                    }
+                )
             }
         }
     )
@@ -78,7 +96,7 @@ private fun ResultsScreenContent(
 private fun ResultsScreenPreview() {
     AndroidAssessmentTheme {
         val results = AssessmentResults(
-            score = 87f,
+            score = 0.875f,
             results = listOf(
                 AssessmentResult(
                     question = "What is the answer to this question?",
@@ -96,7 +114,8 @@ private fun ResultsScreenPreview() {
         )
         ResultsScreenContent(
             modifier = Modifier.fillMaxSize(),
-            results = results
+            results = results,
+            onRetryClicked = {}
         )
     }
 }
