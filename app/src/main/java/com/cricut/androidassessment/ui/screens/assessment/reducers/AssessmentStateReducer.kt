@@ -2,6 +2,7 @@ package com.cricut.androidassessment.ui.screens.assessment.reducers
 
 import android.util.Log
 import com.cricut.androidassessment.data.model.question.Question
+import com.cricut.androidassessment.data.model.results.AssessmentResults
 import com.cricut.androidassessment.ui.screens.common.AssessmentState
 import javax.inject.Inject
 
@@ -41,6 +42,17 @@ class AssessmentStateReducer @Inject constructor(private val answerReducer: Answ
             put(currentQuestion.id, updatedAnswer)
         }
         return currentState.copy(answers = updatedAnswers)
+    }
+
+    fun updateStateWithResults(
+        currentState: AssessmentState,
+        results: AssessmentResults
+    ): AssessmentState {
+        return currentState.copy(fetchingResults = false, results = results)
+    }
+
+    fun updateStateWithFetchingResults(currentState: AssessmentState): AssessmentState {
+        return currentState.copy(fetchingResults = true)
     }
 
 }

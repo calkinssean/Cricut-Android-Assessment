@@ -1,20 +1,28 @@
 package com.cricut.androidassessment.ui.screens.results
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.cricut.androidassessment.data.model.results.AssessmentResult
+import com.cricut.androidassessment.data.model.results.AssessmentResults
 import com.cricut.androidassessment.ui.common.LoadingScreen
 import com.cricut.androidassessment.ui.common.composables.AssessmentTopBar
 import com.cricut.androidassessment.ui.screens.common.AssessmentState
 import com.cricut.androidassessment.ui.screens.assessment.AssessmentViewModel
+import com.cricut.androidassessment.ui.screens.results.composables.ResultListItem
 import com.cricut.androidassessment.ui.theme.AndroidAssessmentTheme
 
 const val ResultsScreenRoute = "ResultsScreenRoute"
@@ -28,16 +36,17 @@ fun ResultsScreen(
         viewModel.getAssessmentResults()
     }
     val state by viewModel.observableModel.collectAsStateWithLifecycle()
+    val results = state.results
     when {
-        state.fetchingResults -> LoadingScreen(modifier = modifier)
-        else -> ResultsScreenContent(modifier = modifier, state = state)
+        state.fetchingResults || results == null -> LoadingScreen(modifier = modifier)
+        else -> ResultsScreenContent(modifier = modifier, results = results)
     }
 }
 
 @Composable
 private fun ResultsScreenContent(
     modifier: Modifier,
-    state: AssessmentState
+    results: AssessmentResults
 ) {
     Scaffold(
         modifier = modifier,
@@ -45,8 +54,20 @@ private fun ResultsScreenContent(
             AssessmentTopBar(modifier = Modifier.fillMaxWidth(), title = "Results")
         },
         content = { paddingValues ->
-            Column(modifier = Modifier.padding(paddingValues)) {
-
+            Column(
+                modifier = Modifier.padding(paddingValues).padding(top = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    text = "You scored ${results.score}%",
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleLarge
+                )
+                results.results.forEach {
+                    ResultListItem(modifier = Modifier.fillMaxWidth(), it)
+                }
             }
         }
     )
@@ -56,13 +77,26 @@ private fun ResultsScreenContent(
 @Composable
 private fun ResultsScreenPreview() {
     AndroidAssessmentTheme {
-        val state = AssessmentState(
-            isLoading = false,
-            fetchingResults = true
+        val results = AssessmentResults(
+            score = 87f,
+            results = listOf(
+                AssessmentResult(
+                    question = "What is the answer to this question?",
+                    correctAnswer = "42",
+                    answer = "I don't know",
+                    isCorrect = false
+                ),
+                AssessmentResult(
+                    question = "What is the answer to this question?",
+                    correctAnswer = "42",
+                    answer = "42",
+                    isCorrect = true
+                )
+            )
         )
         ResultsScreenContent(
             modifier = Modifier.fillMaxSize(),
-            state = state
+            results = results
         )
     }
 }

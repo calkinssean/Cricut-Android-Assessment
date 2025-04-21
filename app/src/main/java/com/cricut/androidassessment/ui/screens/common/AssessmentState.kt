@@ -2,12 +2,14 @@ package com.cricut.androidassessment.ui.screens.common
 
 import com.cricut.androidassessment.data.model.answer.Answer
 import com.cricut.androidassessment.data.model.question.Question
+import com.cricut.androidassessment.data.model.results.AssessmentResults
 
 data class AssessmentState(
     val isLoading: Boolean,
     val fetchingResults: Boolean = false,
     val questions: List<Question> = listOf(),
     val answers: Map<String, Answer> = mapOf(),
+    val results: AssessmentResults? = null,
     val currentQuestionIndex: Int = 0
 ) {
     val currentQuestion: Question?

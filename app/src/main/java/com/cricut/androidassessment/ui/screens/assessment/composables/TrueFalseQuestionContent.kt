@@ -58,7 +58,6 @@ private fun TrueFalseQuestionContentPreview() {
         )
         val answer = TrueFalseAnswer(
             questionId = question.id,
-            questionText = "Do you want to hire Sean?",
             questionType = QuestionType.TrueFalse,
             answer = true
         )

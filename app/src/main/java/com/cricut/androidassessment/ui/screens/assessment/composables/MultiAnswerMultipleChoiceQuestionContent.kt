@@ -58,7 +58,6 @@ fun MultiAnswerMultipleChoiceQuestionContentPreview() {
         )
         val answer = MultipleChoiceAnswer(
             questionId = question.id,
-            questionText = question.questionText,
             selectedIndices = setOf(0, 2, 3),
             questionType = QuestionType.MultiAnswerMultipleChoice
         )

@@ -42,7 +42,14 @@ class AssessmentViewModel
     }
 
     fun getAssessmentResults() {
-
+        mutableModel.update { reducer.updateStateWithFetchingResults(latestModel) }
+        viewModelScope.launch {
+            val results = assessmentRepository.getAssessmentResults(
+                latestModel.questions,
+                latestModel.answers
+            )
+            mutableModel.update { reducer.updateStateWithResults(latestModel, results) }
+        }
     }
 
     fun onNextClicked() {

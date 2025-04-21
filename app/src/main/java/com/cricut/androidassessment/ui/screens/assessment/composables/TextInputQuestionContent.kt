@@ -56,7 +56,6 @@ private fun TextInputQuestionContentPreview() {
         )
         val answer = TextInputAnswer(
             questionId = question.id,
-            questionText = question.questionText,
             questionType = question.questionType,
             answer = "Sir Lancelot the Brave"
         )

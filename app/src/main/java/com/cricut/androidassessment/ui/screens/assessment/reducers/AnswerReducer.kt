@@ -32,7 +32,6 @@ class AnswerReducer @Inject constructor() {
         val selectedIndex = (value as? Int) ?: return null
         val currentAnswer = answer as? MultipleChoiceAnswer ?: MultipleChoiceAnswer(
             questionId = question.id,
-            questionText = question.questionText,
             questionType = question.questionType,
             selectedIndices = setOf(),
         )
@@ -57,7 +56,6 @@ class AnswerReducer @Inject constructor() {
         val booleanValue = value as? Boolean ?: return null
         return (answer as? TrueFalseAnswer)?.copy(answer = booleanValue) ?: TrueFalseAnswer(
             questionId = question.id,
-            questionText = question.questionText,
             questionType = question.questionType,
             answer = booleanValue,
         )
@@ -72,7 +70,6 @@ class AnswerReducer @Inject constructor() {
         if (textValue.isBlank()) return null
         return (answer as? TextInputAnswer)?.copy(answer = textValue) ?: TextInputAnswer(
             questionId = question.id,
-            questionText = question.questionText,
             questionType = question.questionType,
             answer = textValue,
         )

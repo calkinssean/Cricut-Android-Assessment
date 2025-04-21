@@ -55,7 +55,6 @@ fun SingleAnswerMultipleChoiceQuestionContentPreview() {
         )
         val answer = MultipleChoiceAnswer(
             questionId = UUID.randomUUID().toString(),
-            questionText = "What is your favorite color?",
             questionType = question.questionType,
             selectedIndices = setOf(2)
         )
