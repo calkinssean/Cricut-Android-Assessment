@@ -69,6 +69,7 @@ class AnswerReducer @Inject constructor() {
         value: Any
     ): TextInputAnswer? {
         val textValue = value as? String ?: return null
+        if (textValue.isBlank()) return null
         return (answer as? TextInputAnswer)?.copy(answer = textValue) ?: TextInputAnswer(
             questionId = question.id,
             questionText = question.questionText,

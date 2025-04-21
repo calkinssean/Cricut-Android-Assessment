@@ -2,39 +2,39 @@ package com.cricut.androidassessment.ui.screens.assessment.reducers
 
 import android.util.Log
 import com.cricut.androidassessment.data.model.question.Question
-import com.cricut.androidassessment.ui.screens.assessment.AssessmentScreenState
+import com.cricut.androidassessment.ui.screens.common.AssessmentState
 import javax.inject.Inject
 
-class AssessmentScreenStateReducer @Inject constructor(private val answerReducer: AnswerReducer) {
+class AssessmentStateReducer @Inject constructor(private val answerReducer: AnswerReducer) {
 
-    fun createInitialState(): AssessmentScreenState = AssessmentScreenState(isLoading = true)
+    fun createInitialState(): AssessmentState = AssessmentState(isLoading = true)
     fun updateStateWithQuestions(
-        currentState: AssessmentScreenState,
+        currentState: AssessmentState,
         questions: List<Question>
-    ): AssessmentScreenState = currentState.copy(isLoading = false, questions = questions)
+    ): AssessmentState = currentState.copy(isLoading = false, questions = questions)
 
     fun updateStateWithNextQuestion(
-        currentState: AssessmentScreenState
-    ): AssessmentScreenState =
+        currentState: AssessmentState
+    ): AssessmentState =
         currentState.copy(currentQuestionIndex = currentState.currentQuestionIndex + 1)
 
     fun updateStateWithPreviousQuestion(
-        currentState: AssessmentScreenState
-    ): AssessmentScreenState =
+        currentState: AssessmentState
+    ): AssessmentState =
         currentState.copy(currentQuestionIndex = currentState.currentQuestionIndex - 1)
 
     fun updateAnswersWithValue(
-        currentState: AssessmentScreenState,
+        currentState: AssessmentState,
         currentQuestion: Question,
         value: Any
-    ): AssessmentScreenState {
+    ): AssessmentState {
         val updatedAnswer = answerReducer.reduce(
             currentQuestion,
             currentState.currentAnswer,
             value
         )
         if (updatedAnswer == null) {
-            Log.e("AssessmentScreenStateReducer", "Invalid answer value for question ${currentQuestion.id}, $value")
+            Log.e("AssessmentStateReducer", "Invalid answer value for question ${currentQuestion.id}, $value")
             return currentState
         }
         val updatedAnswers = currentState.answers.toMutableMap().apply {

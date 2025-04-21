@@ -2,13 +2,10 @@ package com.cricut.androidassessment.ui.screens.assessment
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.cricut.androidassessment.data.model.answer.Answer
-import com.cricut.androidassessment.data.model.answer.MultipleChoiceAnswer
-import com.cricut.androidassessment.data.model.answer.TextInputAnswer
-import com.cricut.androidassessment.data.model.answer.TrueFalseAnswer
 import com.cricut.androidassessment.data.model.question.Question
 import com.cricut.androidassessment.data.repository.AssessmentRepository
-import com.cricut.androidassessment.ui.screens.assessment.reducers.AssessmentScreenStateReducer
+import com.cricut.androidassessment.ui.screens.assessment.reducers.AssessmentStateReducer
+import com.cricut.androidassessment.ui.screens.common.AssessmentState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,12 +17,12 @@ import javax.inject.Inject
 class AssessmentViewModel
 @Inject constructor(
     private val assessmentRepository: AssessmentRepository,
-    private val reducer: AssessmentScreenStateReducer
+    private val reducer: AssessmentStateReducer
 ) : ViewModel() {
 
     private val mutableModel = MutableStateFlow(reducer.createInitialState())
-    val observableModel: StateFlow<AssessmentScreenState> = mutableModel
-    private val latestModel: AssessmentScreenState
+    val observableModel: StateFlow<AssessmentState> = mutableModel
+    private val latestModel: AssessmentState
         get() = mutableModel.value
 
     init {
@@ -42,6 +39,10 @@ class AssessmentViewModel
                 )
             }
         }
+    }
+
+    fun getAssessmentResults() {
+
     }
 
     fun onNextClicked() {

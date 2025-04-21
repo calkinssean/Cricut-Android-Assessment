@@ -12,10 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
 import com.cricut.androidassessment.data.model.common.QuestionType
 import com.cricut.androidassessment.data.model.question.MultiAnswerMultipleChoiceQuestion
 import com.cricut.androidassessment.data.model.question.Question
@@ -24,6 +21,7 @@ import com.cricut.androidassessment.ui.common.LoadingScreen
 import com.cricut.androidassessment.ui.common.composables.AssessmentButton
 import com.cricut.androidassessment.ui.common.composables.AssessmentTopBar
 import com.cricut.androidassessment.ui.screens.assessment.composables.QuestionContent
+import com.cricut.androidassessment.ui.screens.common.AssessmentState
 import com.cricut.androidassessment.ui.theme.AndroidAssessmentTheme
 import java.util.UUID
 
@@ -43,34 +41,21 @@ private data class AssessmentScreenInteractions(
     }
 }
 
-fun NavGraphBuilder.assessmentScreen() {
-    composable(
-        route = AssessmentScreenRoute
-    ) { backStackEntry ->
-
-        val viewModel: AssessmentViewModel = hiltViewModel()
-        val uiState by viewModel.observableModel.collectAsStateWithLifecycle()
-
-        val interactions = AssessmentScreenInteractions(
-            onNextClicked = viewModel::onNextClicked,
-            onPreviousQuestionClicked = viewModel::onPreviousQuestionClicked,
-            onAnswerValueChanged = viewModel::onAnswerValueChanged
-        )
-
-        AssessmentScreen(
-            modifier = Modifier.fillMaxSize(),
-            state = uiState,
-            interactions = interactions
-        )
-    }
-}
-
 @Composable
-private fun AssessmentScreen(
+fun AssessmentScreen(
     modifier: Modifier = Modifier,
-    state: AssessmentScreenState,
-    interactions: AssessmentScreenInteractions
+    viewModel: AssessmentViewModel,
+    onAssessmentComplete: () -> Unit
 ) {
+
+    val state by viewModel.observableModel.collectAsStateWithLifecycle()
+
+    val interactions = AssessmentScreenInteractions(
+        onNextClicked = viewModel::onNextClicked,
+        onPreviousQuestionClicked = viewModel::onPreviousQuestionClicked,
+        onAnswerValueChanged = viewModel::onAnswerValueChanged
+    )
+
     when {
         state.isLoading -> LoadingScreen(modifier = modifier)
         else -> AssessmentScreenContent(
@@ -84,7 +69,7 @@ private fun AssessmentScreen(
 @Composable
 private fun AssessmentScreenContent(
     modifier: Modifier,
-    state: AssessmentScreenState,
+    state: AssessmentState,
     interactions: AssessmentScreenInteractions
 ) {
     Scaffold(
@@ -142,7 +127,7 @@ private fun AssessmentScreenContent(
 @Preview(showBackground = true)
 @Composable
 private fun PreviewAssessmentScreen() {
-    val state = AssessmentScreenState(
+    val state = AssessmentState(
         isLoading = false,
         questions = listOf(
             TrueFalseQuestion(
@@ -167,7 +152,7 @@ private fun PreviewAssessmentScreen() {
         currentQuestionIndex = 2
     )
     AndroidAssessmentTheme {
-        AssessmentScreen(
+        AssessmentScreenContent(
             modifier = Modifier.fillMaxSize(),
             state = state,
             interactions = AssessmentScreenInteractions.Empty

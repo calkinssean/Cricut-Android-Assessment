@@ -1,10 +1,11 @@
-package com.cricut.androidassessment.ui.screens.assessment
+package com.cricut.androidassessment.ui.screens.common
 
 import com.cricut.androidassessment.data.model.answer.Answer
 import com.cricut.androidassessment.data.model.question.Question
 
-data class AssessmentScreenState(
+data class AssessmentState(
     val isLoading: Boolean,
+    val fetchingResults: Boolean = false,
     val questions: List<Question> = listOf(),
     val answers: Map<String, Answer> = mapOf(),
     val currentQuestionIndex: Int = 0
