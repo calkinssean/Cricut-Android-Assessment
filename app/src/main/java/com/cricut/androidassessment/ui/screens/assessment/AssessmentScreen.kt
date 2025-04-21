@@ -30,13 +30,15 @@ const val AssessmentScreenRoute = "AssessmentScreenRoute"
 private data class AssessmentScreenInteractions(
     val onNextClicked: () -> Unit,
     val onPreviousQuestionClicked: () -> Unit,
-    val onAnswerValueChanged: (Question, Any) -> Unit
+    val onAnswerValueChanged: (Question, Any) -> Unit,
+    val onAssessmentComplete: () -> Unit
 ) {
     companion object {
         val Empty = AssessmentScreenInteractions(
             onNextClicked = {},
             onPreviousQuestionClicked = {},
-            onAnswerValueChanged = { _, _ -> }
+            onAnswerValueChanged = { _, _ -> },
+            onAssessmentComplete = {}
         )
     }
 }
@@ -53,7 +55,8 @@ fun AssessmentScreen(
     val interactions = AssessmentScreenInteractions(
         onNextClicked = viewModel::onNextClicked,
         onPreviousQuestionClicked = viewModel::onPreviousQuestionClicked,
-        onAnswerValueChanged = viewModel::onAnswerValueChanged
+        onAnswerValueChanged = viewModel::onAnswerValueChanged,
+        onAssessmentComplete = onAssessmentComplete
     )
 
     when {
@@ -115,7 +118,11 @@ private fun AssessmentScreenContent(
                 }
                 AssessmentButton(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = { interactions.onNextClicked() },
+                    onClick = {
+                        if (state.isLastQuestion)
+                            interactions.onAssessmentComplete() else
+                            interactions.onNextClicked()
+                    },
                     enabled = state.isCurrentQuestionAnswered,
                     text = if (state.isLastQuestion) "Submit" else "Next"
                 )
