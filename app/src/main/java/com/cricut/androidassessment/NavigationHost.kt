@@ -12,7 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.cricut.androidassessment.ui.screens.assessment.AssessmentScreen
 import com.cricut.androidassessment.ui.screens.assessment.AssessmentScreenRoute
-import com.cricut.androidassessment.ui.screens.assessment.AssessmentViewModel
+import com.cricut.androidassessment.ui.screens.common.AssessmentViewModel
 import com.cricut.androidassessment.ui.screens.results.ResultsScreen
 import com.cricut.androidassessment.ui.screens.results.ResultsScreenRoute
 

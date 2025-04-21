@@ -22,6 +22,7 @@ import com.cricut.androidassessment.ui.common.composables.AssessmentButton
 import com.cricut.androidassessment.ui.common.composables.AssessmentTopBar
 import com.cricut.androidassessment.ui.screens.assessment.composables.QuestionContent
 import com.cricut.androidassessment.ui.screens.common.AssessmentState
+import com.cricut.androidassessment.ui.screens.common.AssessmentViewModel
 import com.cricut.androidassessment.ui.theme.AndroidAssessmentTheme
 import java.util.UUID
 

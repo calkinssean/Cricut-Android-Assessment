@@ -1,11 +1,11 @@
-package com.cricut.androidassessment.ui.screens.assessment
+package com.cricut.androidassessment.ui.screens.common
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cricut.androidassessment.data.model.question.Question
 import com.cricut.androidassessment.data.repository.AssessmentRepository
 import com.cricut.androidassessment.ui.screens.assessment.reducers.AssessmentStateReducer
-import com.cricut.androidassessment.ui.screens.common.AssessmentState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +22,8 @@ class AssessmentViewModel
 
     private val mutableModel = MutableStateFlow(reducer.createInitialState())
     val observableModel: StateFlow<AssessmentState> = mutableModel
-    private val latestModel: AssessmentState
+    @VisibleForTesting
+    val latestModel: AssessmentState
         get() = mutableModel.value
 
     init {
