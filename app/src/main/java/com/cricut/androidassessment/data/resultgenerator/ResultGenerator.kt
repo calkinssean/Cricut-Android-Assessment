@@ -72,7 +72,7 @@ class ResultGenerator @Inject constructor() {
             question = question.questionText,
             correctAnswer = correctAnswer,
             answer = selectedAnswer,
-            isCorrect = correctAnswer == selectedAnswer
+            isCorrect = correctAnswer.lowercase() == selectedAnswer.lowercase()
         )
     }
 
@@ -81,16 +81,13 @@ class ResultGenerator @Inject constructor() {
         answer: Answer?
     ): AssessmentResult? {
         val safeAnswer = answer as? MultipleChoiceAnswer ?: return null
-        val correctAnswers =
-            question.options.filterIndexed { index, _ -> question.correctAnswers.contains(index) }
-                .joinToString { ", " }
+        val correctAnswers = question.correctAnswers.map { question.options[it] }
         val selectedAnswers =
-            question.options.filterIndexed { index, _ -> safeAnswer.selectedIndices.contains(index) }
-                .joinToString { ", " }
+            safeAnswer.selectedIndices.map { question.options[it] }
         return AssessmentResult(
             question = question.questionText,
-            correctAnswer = correctAnswers,
-            answer = selectedAnswers,
+            correctAnswer = correctAnswers.joinToString(", "),
+            answer = selectedAnswers.joinToString( ", "),
             isCorrect = question.correctAnswers.containsAll(safeAnswer.selectedIndices)
         )
     }
