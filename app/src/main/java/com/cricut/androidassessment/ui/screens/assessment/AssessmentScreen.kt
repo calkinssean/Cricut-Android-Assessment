@@ -124,6 +124,7 @@ private fun AssessmentScreenContent(
                 }
                 AssessmentButton(
                     modifier = Modifier.fillMaxWidth(),
+                    isBusy = state.isBusy,
                     onClick = {
                         if (state.isLastQuestion)
                             interactions.onAssessmentComplete() else
