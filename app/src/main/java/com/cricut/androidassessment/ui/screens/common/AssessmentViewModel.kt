@@ -7,11 +7,13 @@ import com.cricut.androidassessment.data.model.question.Question
 import com.cricut.androidassessment.data.repository.AssessmentRepository
 import com.cricut.androidassessment.ui.screens.assessment.reducers.AssessmentStateReducer
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.random.Random
 
 @HiltViewModel
 class AssessmentViewModel
@@ -51,8 +53,12 @@ class AssessmentViewModel
     }
 
     fun onNextClicked() {
-        if (!latestModel.isLastQuestion) {
-            mutableModel.update { reducer.updateStateWithNextQuestion(latestModel) }
+        viewModelScope.launch {
+            mutableModel.update { reducer.updateStateWithIsBusy(latestModel) }
+            delay(Random.nextLong(0, 1000))
+            if (!latestModel.isLastQuestion) {
+                mutableModel.update { reducer.updateStateWithNextQuestion(latestModel) }
+            }
         }
     }
 

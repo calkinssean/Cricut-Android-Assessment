@@ -7,6 +7,7 @@ import com.cricut.androidassessment.data.model.results.AssessmentResults
 data class AssessmentState(
     val isLoading: Boolean,
     val fetchingResults: Boolean = false,
+    val isBusy: Boolean = false,
     val questions: List<Question> = listOf(),
     val answers: Map<String, Answer> = mapOf(),
     val results: AssessmentResults? = null,

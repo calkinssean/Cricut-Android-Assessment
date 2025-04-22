@@ -14,10 +14,14 @@ class AssessmentStateReducer @Inject constructor(private val answerReducer: Answ
         questions: List<Question>
     ): AssessmentState = currentState.copy(isLoading = false, questions = questions)
 
+    fun updateStateWithIsBusy(currentState: AssessmentState): AssessmentState {
+        return currentState.copy(isBusy = true)
+    }
+
     fun updateStateWithNextQuestion(
         currentState: AssessmentState
     ): AssessmentState =
-        currentState.copy(currentQuestionIndex = currentState.currentQuestionIndex + 1)
+        currentState.copy(currentQuestionIndex = currentState.currentQuestionIndex + 1, isBusy = false)
 
     fun updateStateWithPreviousQuestion(
         currentState: AssessmentState
