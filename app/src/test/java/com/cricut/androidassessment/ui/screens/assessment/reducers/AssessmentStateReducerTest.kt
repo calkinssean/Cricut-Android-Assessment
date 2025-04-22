@@ -49,11 +49,19 @@ class AssessmentStateReducerTest {
     }
 
     @Test
+    fun `updateStateWithIsBusy returns correct state`() {
+        val initialState = objectUnderTest.createInitialState()
+        val updatedState = objectUnderTest.updateStateWithIsBusy(initialState)
+        assertTrue(updatedState.isBusy)
+    }
+
+    @Test
     fun `updateStateWithNextQuestion returns correct state`() {
-        val initialState = objectUnderTest.createInitialState().copy(currentQuestionIndex = Random.nextInt(0, 50))
+        val initialState = objectUnderTest.createInitialState().copy(currentQuestionIndex = Random.nextInt(0, 50), isBusy = true)
         val updatedState = objectUnderTest.updateStateWithNextQuestion(initialState)
 
         assertEquals(initialState.currentQuestionIndex + 1, updatedState.currentQuestionIndex)
+        assertFalse(updatedState.isBusy)
     }
 
     @Test

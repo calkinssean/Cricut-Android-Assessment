@@ -75,7 +75,7 @@ class AssessmentRepository @Inject constructor(
                 UUID.randomUUID().toString(),
                 "Which of the following are common Jetpack libraries?",
                 QuestionType.MultiAnswerMultipleChoice,
-                listOf("Retrofit", "Room", "Navigation", "Picasso", "Glide"),
+                listOf("Retrofit", "Room", "Navigation", "Picasso"),
                 setOf(1, 2)
             ),
             TrueFalseQuestion(

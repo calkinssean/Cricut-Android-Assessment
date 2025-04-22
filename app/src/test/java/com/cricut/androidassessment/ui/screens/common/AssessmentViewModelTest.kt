@@ -94,8 +94,10 @@ class AssessmentViewModelTest {
     }
 
     @Test
-    fun `onNextClicked calls correct reducer method`() {
+    fun `onNextClicked calls correct reducer method`() = testScope.runTest {
         objectUnderTest.onNextClicked()
+        advanceUntilIdle()
+        verify(reducerSpy, times(1)).updateStateWithIsBusy(any())
         verify(reducerSpy, times(1)).updateStateWithNextQuestion(any())
     }
 
