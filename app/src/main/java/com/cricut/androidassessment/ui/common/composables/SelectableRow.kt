@@ -1,5 +1,6 @@
 package com.cricut.androidassessment.ui.common.composables
 
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,9 +12,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.cricut.androidassessment.ui.theme.AndroidAssessmentTheme
+
+@VisibleForTesting
+object SelectableRowTestTags {
+    val rowTestTag: String = "rowTestTag"
+    val checkboxTestTag: String = "checkboxTestTag"
+    val textTestTag: String = "textTestTag"
+}
 
 @Composable
 fun SelectableRow(
@@ -24,6 +33,7 @@ fun SelectableRow(
 ) {
     Row(
         modifier = modifier
+            .testTag(SelectableRowTestTags.rowTestTag)
             .fillMaxWidth()
             .clickable {
                 onClick()
@@ -31,12 +41,17 @@ fun SelectableRow(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Checkbox(
+            modifier = Modifier.testTag(SelectableRowTestTags.checkboxTestTag),
             checked = checked,
             onCheckedChange = {
                 onClick()
             }
         )
-        Text(text = text, style = MaterialTheme.typography.bodyMedium)
+        Text(
+            modifier = Modifier.testTag(SelectableRowTestTags.textTestTag),
+            text = text,
+            style = MaterialTheme.typography.bodyMedium
+        )
     }
 }
 
