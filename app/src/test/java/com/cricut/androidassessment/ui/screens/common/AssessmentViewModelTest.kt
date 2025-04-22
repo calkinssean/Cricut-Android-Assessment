@@ -40,7 +40,7 @@ import org.mockito.kotlin.whenever
 @OptIn(ExperimentalCoroutinesApi::class)
 class AssessmentViewModelTest {
 
-    lateinit var objectUnderTest: AssessmentViewModel
+    private lateinit var objectUnderTest: AssessmentViewModel
 
     private val mockAssessmentRepository: AssessmentRepository = mock()
     private val mockAnswerReducer: AnswerReducer = mock()
