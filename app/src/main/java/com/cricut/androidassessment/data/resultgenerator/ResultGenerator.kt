@@ -38,11 +38,13 @@ class ResultGenerator @Inject constructor() {
         answer: Answer?
     ): AssessmentResult? {
         val safeAnswer = answer as? TextInputAnswer ?: return null
+        val normalizedCorrectAnswer = question.correctAnswer.lowercase().replace(" ", "").replace("-", "")
+        val normalizedUserAnswer = safeAnswer.answer.lowercase().replace(" ", "").replace("-", "")
         return AssessmentResult(
             question = question.questionText,
             correctAnswer = question.correctAnswer,
             answer = safeAnswer.answer,
-            isCorrect = question.correctAnswer.lowercase() == safeAnswer.answer.lowercase()
+            isCorrect = normalizedCorrectAnswer == normalizedUserAnswer
         )
     }
 

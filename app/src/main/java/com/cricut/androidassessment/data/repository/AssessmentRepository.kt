@@ -52,55 +52,55 @@ class AssessmentRepository @Inject constructor(
         return listOf(
             SingleAnswerMultipleChoiceQuestion(
                 UUID.randomUUID().toString(),
-                "What is the capital of France?",
+                "Which component is the entry point for an Android app with a UI?",
                 QuestionType.SingleAnswerMultipleChoice,
-                listOf("Paris", "London", "Berlin", "Madrid"),
-                0
+                listOf("Service", "Activity", "BroadcastReceiver", "ContentProvider"),
+                1
             ),
             SingleAnswerMultipleChoiceQuestion(
                 UUID.randomUUID().toString(),
-                "Which planet is known as the Red Planet?",
+                "In Jetpack Compose, what is the function used to define a UI element?",
                 QuestionType.SingleAnswerMultipleChoice,
-                listOf("Jupiter", "Venus", "Mars", "Saturn"),
+                listOf("View", "Component", "Composable", "Widget"),
                 2
             ),
             MultiAnswerMultipleChoiceQuestion(
                 UUID.randomUUID().toString(),
-                "Which countries are part of the European Union?",
+                "Which of the following are benefits of using Kotlin for Android development?",
                 QuestionType.MultiAnswerMultipleChoice,
-                listOf("Germany", "United Kingdom", "France", "Italy"),
-                setOf(0, 2)
+                listOf("Null safety", "Full Java interoperability", "Verbose syntax", "Built-in coroutines support"),
+                setOf(0, 1, 3)
             ),
             MultiAnswerMultipleChoiceQuestion(
                 UUID.randomUUID().toString(),
-                "What are the three primary colors?",
+                "Which of the following are common Jetpack libraries?",
                 QuestionType.MultiAnswerMultipleChoice,
-                options = listOf("Red", "Green", "Blue", "Yellow", "Orange"),
-                setOf(0, 2, 3)
+                listOf("Retrofit", "Room", "Navigation", "Picasso", "Glide"),
+                setOf(1, 2)
             ),
             TrueFalseQuestion(
                 UUID.randomUUID().toString(),
-                "The sky is blue",
+                "A Composable function can return a value?",
                 QuestionType.TrueFalse,
-                true
+                false
             ),
             TrueFalseQuestion(
                 UUID.randomUUID().toString(),
-                "The capital of Australia is Canberra.",
+                "`findViewById()` is the recommended way to access UI elements in modern Android development with View Binding or Data Binding?",
                 QuestionType.TrueFalse,
-                true
+                false
             ),
             TextInputQuestion(
                 UUID.randomUUID().toString(),
-                "What is the largest mammal in the world?",
+                "What does the acronym 'MVVM' stand for in Android architecture?",
                 QuestionType.TextInput,
-                "African Elephant"
+                "Model-View-ViewModel"
             ),
             TextInputQuestion(
                 UUID.randomUUID().toString(),
-                "What is the currency of Japan?",
+                "Name one advantage of using ConstraintLayout.",
                 QuestionType.TextInput,
-                "Japanese Yen"
+                "reduced nesting"
             )
         )
     }
