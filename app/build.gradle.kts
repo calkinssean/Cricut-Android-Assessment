@@ -43,6 +43,10 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.15"
     }
+    testOptions {
+        // Allows Log methods to not break tests
+        unitTests.isReturnDefaultValues = true
+    }
 }
 
 detekt {

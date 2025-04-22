@@ -20,17 +20,14 @@ class AssessmentViewModel
     private val reducer: AssessmentStateReducer
 ) : ViewModel() {
 
-    private val mutableModel = MutableStateFlow(reducer.createInitialState())
+    @VisibleForTesting
+    val mutableModel = MutableStateFlow(reducer.createInitialState())
     val observableModel: StateFlow<AssessmentState> = mutableModel
     @VisibleForTesting
     val latestModel: AssessmentState
         get() = mutableModel.value
 
-    init {
-        fetchQuestions()
-    }
-
-    private fun fetchQuestions() {
+    fun fetchQuestions() {
         viewModelScope.launch {
             val questions = assessmentRepository.getQuestions()
             mutableModel.update {
@@ -54,9 +51,7 @@ class AssessmentViewModel
     }
 
     fun onNextClicked() {
-        if (latestModel.isLastQuestion) {
-
-        } else {
+        if (!latestModel.isLastQuestion) {
             mutableModel.update { reducer.updateStateWithNextQuestion(latestModel) }
         }
     }
